@@ -17,11 +17,11 @@ requirements:
 
 variables:
 ----------
-* countryName: 'US'
-* stateOrProvinceName <The state or province name value that should be used in openssl.cnf as the default>
-* localityName <The locality name value that should be used in openssl.cnf as the default>
-* organizationName <The organization name value that should be used in openssl.cnf as the default>
-* zero_organizationalUnitName <The organizational unit name value that should be used in openssl.cnf as the default>
+* `countryName` <The country name value that should be used in openssl.cnf as the default>
+* `stateOrProvinceName` <The state or province name value that should be used in openssl.cnf as the default>
+* `localityName` <The locality name value that should be used in openssl.cnf as the default>
+* `organizationName` <The organization name value that should be used in openssl.cnf as the default>
+* `zero_organizationalUnitName` <The organizational unit name value that should be used in openssl.cnf as the default>
 
 cloning the repository:
 -----------------------
