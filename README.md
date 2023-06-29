@@ -4,7 +4,8 @@ openssl_altnames
 An ansible playbook that adds the necessary configuration directives to configure multiple subject alternative (SAN) names in /etc/pki/tls/openssl.cnf, 
 the default openssl configuration file on EL 7 or greater.
 
-The playbook uses lineinfile and blockinfile tasks with regular expressions to ensure the required configuration directives such as `[ alt_names ]` section are present.  
+The playbook uses lineinfile and blockinfile tasks with regular expressions to ensure the required configuration directives 
+such as `[ alt_names ]` section are present.  
 Custom markers are used for req_ext and alt_names blocks.
 
 requirements:
