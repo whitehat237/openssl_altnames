@@ -12,6 +12,16 @@ requirements:
 * Gather facts is enabled
 * /etc/pki/tls/openssl.cnf file is present
 * Ansible user is able to elevate on the target node
+* Required variables are defined
+
+
+variables:
+----------
+* countryName: 'US'
+* stateOrProvinceName <The state or province name value that should be used in openssl.cnf as the default>
+* localityName <The locality name value that should be used in openssl.cnf as the default>
+* organizationName <The organization name value that should be used in openssl.cnf as the default>
+* zero_organizationalUnitName <The organizational unit name value that should be used in openssl.cnf as the default>
 
 cloning the repository:
 -----------------------
