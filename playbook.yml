@@ -10,7 +10,7 @@
     stateOrProvinceName: 'Texas'
     localityName: 'Brownsville'
     organizationName: 'SpaceX'
-    0.organizationalUnitName: 'Engineering'
+    zero_organizationalUnitName: 'Engineering'
         
 
   tasks:
@@ -91,7 +91,7 @@
       ansible.builtin.lineinfile:
         path: '/etc/pki/tls/openssl.cnf'
         regexp: '^#?organizationalUnitName_default'
-        line: 'organizationalUnitName_default  = {{ 0.organizationalUnitName }}'
+        line: 'organizationalUnitName_default  = {{ zero_organizationalUnitName }}'
 
     - name: Ensure commonName_default is set
       ansible.builtin.lineinfile:
