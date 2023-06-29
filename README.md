@@ -15,7 +15,9 @@ requirements:
 
 cloning the repository:
 -----------------------
-Use a git client to clone the repository.  The `main` branch is the release branch.
+Use a git client to clone the repository.  
+The `main` branch is the release branch.
+
 ```bash
 cd ~/
 git clone https://github.com/whitehat237/openssl_altnames.git
