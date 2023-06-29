@@ -55,8 +55,7 @@
           DNS.1 = "{{ ansible_nodename }}"
           DNS.2 = "{{ ansible_hostname }}"
           DNS.3 = "{{ ansible_default_ipv4.address }}"
-          IP.1  = "{{ ansible_default_ipv4.address }}"
-
+    
     - name: Ensure padding for alt_names block
       ansible.builtin.replace:
         dest: '/etc/pki/tls/openssl.cnf'
