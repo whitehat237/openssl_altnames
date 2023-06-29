@@ -1,0 +1,95 @@
+---
+
+- name: openssl_config
+  hosts: "{{ ansible_limit | default(omit) }}"
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Check if openssl.cnf file exists
+      ansible.builtin.stat:
+        path: '/etc/pki/tls/openssl.cnf'
+      register: openssl_cnf
+
+    - name: End play for host if openssl.cnf not present
+      ansible.builtin.meta: end_host
+      when: not openssl_cnf.stat.exists
+
+    - name: Ensure req_extensions line is present
+      ansible.builtin.lineinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        insertafter: 'distinguished_name\s*= req_distinguished_name'
+        regexp: '^req_extensions'
+        line: 'req_extensions          = req_ext'
+
+    - name: Ensure req_ext section is present
+      ansible.builtin.blockinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        marker: "# {mark} ANSIBLE MANAGED BLOCK req_ext"
+        insertafter: "# req_extensions = v3_req # The extensions to add to a certificate request"
+        block: |
+          [ req_ext ]
+          subjectAltName                 = @alt_names
+
+    - name: Ensure padding for req_ext block
+      ansible.builtin.replace:
+        dest: '/etc/pki/tls/openssl.cnf'
+        regexp: "(?<!\n\n)(# BEGIN ANSIBLE MANAGED BLOCK req_ext)"
+        replace: '\n\1'
+
+    - name: Ensure alt_names section is present
+      ansible.builtin.blockinfile:
+        marker: "# {mark} ANSIBLE MANAGED BLOCK alt_names"
+        path: '/etc/pki/tls/openssl.cnf'
+        insertafter: '^#?\s*SET-ex3'
+        block: |
+          [ alt_names ]
+          DNS.1 = "{{ ansible_nodename }}"
+          DNS.2 = "{{ ansible_hostname }}"
+          DNS.3 = "{{ ansible_default_ipv4.address }}"
+          IP.1  = "{{ ansible_default_ipv4.address }}"
+
+    - name: Ensure padding for alt_names block
+      ansible.builtin.replace:
+        dest: '/etc/pki/tls/openssl.cnf'
+        regexp: "(?<!\n\n)(# BEGIN ANSIBLE MANAGED BLOCK alt_names)"
+        replace: '\n\1'
+
+    - name: Ensure countryName_default is set
+      ansible.builtin.lineinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        regexp: '^#?countryName_default'
+        line: 'countryName_default             = US'
+
+    - name: Ensure stateOrProvinceName is set
+      ansible.builtin.lineinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        regexp: '^#?stateOrProvinceName_default'
+        line: 'stateOrProvinceName_default     = Alabama'
+
+    - name: Ensure localityName is set
+      ansible.builtin.lineinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        regexp: '^#?localityName_default'
+        line: 'localityName_default            = Huntsville'
+
+    - name: Ensure 0.organizationName_default is set
+      ansible.builtin.lineinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        regexp: '^#?0.organizationName_default'
+        line: '0.organizationName_default      = NGC'
+
+    - name: Ensure organizationalUnitName_default is set
+      ansible.builtin.lineinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        regexp: '^#?organizationalUnitName_default'
+        line: 'organizationalUnitName_default  = Tools_Team'
+
+    - name: Ensure commonName_default is set
+      ansible.builtin.lineinfile:
+        path: '/etc/pki/tls/openssl.cnf'
+        regexp: '^#?commonName_default'
+        insertbefore: '^commonName_max'
+        line: 'commonName_default              = {{ ansible_nodename }}'
+        
+...
